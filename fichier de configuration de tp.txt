@@ -1,0 +1,160 @@
+------------ROUTER 3
+interface GigabitEthernet0/0
+ ip address 192.168.4.1 255.255.255.0
+interface GigabitEthernet0/1
+ ip address 192.168.5.2 255.255.255.0
+ ip helper-address 192.168.4.2
+ standby 1 ip 192.168.5.254
+ standby 1 priority 120
+ standby 1 preempt
+interface Serial0/0/0
+ ip address 10.10.1.1 255.255.255.252
+interface Serial0/0/1
+ ip address 10.10.4.1 255.255.255.252
+router ospf 1
+ router-id 1.1.1.1
+ network 192.168.4.0 0.0.0.255 area 0
+ network 10.10.1.0 0.0.0.3 area 0
+ network 10.10.4.0 0.0.0.3 area 0
+ network 192.168.5.0 0.0.0.255 area 0
+logging trap debugging
+logging 192.168.4.2
+service timestamps log datetime msec
+ntp server 192.168.4.2
+ntp timezone utc 0
+------------ROUTER 1
+interface GigabitEthernet0/0
+ ip address 192.168.5.1 255.255.255.0
+ ip helper-address 192.168.4.2
+ standby 1 ip 192.168.5.254
+standby 1 priority 110
+interface Serial0/0/0
+ ip address 10.10.2.2 255.255.255.252
+interface Serial0/0/1
+ ip address 10.10.4.2 255.255.255.252
+router ospf 1
+ router-id 2.2.2.2
+ network 192.168.5.0 0.0.0.255 area 0
+ network 10.10.4.0 0.0.0.3 area 0
+ network 10.10.2.0 0.0.0.3 area 0
+logging trap debugging
+logging host 192.168.4.2
+service timestamps log datetime msec
+ntp server 192.168.4.2
+ntp timezone utc 0
+------------ROUTER 0
+ip dhcp excluded-address 192.168.6.1 192.168.6.9
+ip dhcp pool lan6.1
+ network 192.168.6.0 255.255.255.0
+ default-router 192.168.6.1
+ dns-server 1.1.1.1
+interface GigabitEthernet0/0
+ ip address 192.168.6.1 255.255.255.0
+interface Serial0/0/0
+ ip address 10.10.2.1 255.255.255.252
+interface Serial0/0/1
+ ip address 10.10.3.1 255.255.255.252
+router ospf 1
+ router-id 3.3.3.3
+ network 192.168.6.0 0.0.0.255 area 0
+ network 10.10.2.0 0.0.0.3 area 0
+ network 10.10.3.0 0.0.0.3 area 0
+logging trap debugging
+logging host 192.168.4.2
+service timestamps log datetime msec
+ntp server 192.168.4.2
+ntp timezone utc 0
+------------ROUTER 2
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ ip address 192.168.1.1 255.255.255.0
+interface GigabitEthernet0/0.20
+ encapsulation dot1Q 20
+ ip address 192.168.2.1 255.255.255.0
+interface GigabitEthernet0/0.30
+ encapsulation dot1Q 30
+ ip address 192.168.3.1 255.255.255.0
+interface Serial0/0/0
+ ip address 10.10.1.2 255.255.255.252
+interface Serial0/0/1
+ ip address 10.10.3.2 255.255.255.252
+router ospf 1
+ router-id 4.4.4.4
+ network 192.168.1.0 0.0.0.255 area 0
+ network 192.168.2.0 0.0.0.255 area 0
+ network 192.168.3.0 0.0.0.255 area 0
+ network 10.10.1.0 0.0.0.3 area 0
+ network 10.10.3.0 0.0.0.3 area 0
+logging trap debugging
+logging host 192.168.4.2
+service timestamps log datetime msec
+ntp server 192.168.4.2
+ntp timezone utc 0
+------------SWITCH 5
+spanning-tree vlan 1 root primary
+interface range FastEthernet0/1-2
+ switchport trunk allowed vlan 1,10,20,30
+ switchport mode trunk
+interface GigabitEthernet0/1
+ switchport trunk allowed vlan 1,10,20,30
+ switchport mode trunk
+------------SWITCH 1
+spanning-tree mode pvst
+spanning-tree vlan 1 priority 28672
+interface range FastEthernet0/1-2
+ channel-group 1 mode desirable
+interface Port-channel1
+ switchport trunk allowed vlan 1,10,20,30
+ switchport mode trunk
+interface FastEthernet0/3
+ switchport access vlan 30
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+interface FastEthernet0/4
+ switchport access vlan 20
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+interface FastEthernet0/5
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+interface GigabitEthernet0/1
+ switchport trunk allowed vlan 1,10,20,30
+ switchport mode trunk
+------------SWITCH 0
+spanning-tree mode pvst
+spanning-tree vlan 1 root secondary
+interface range FastEthernet0/1-2
+ channel-group 1 mode auto
+interface Port-channel1
+ switchport trunk allowed vlan 1,10,20,30
+ switchport mode trunk
+interface FastEthernet0/3
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+interface FastEthernet0/4
+ switchport access vlan 20
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+interface FastEthernet0/5
+ switchport access vlan 30
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+interface GigabitEthernet0/1
+ switchport trunk allowed vlan 1,10,20,30
+ switchport mode trunk
+------------SWITCH 3
+interface range FastEthernet0/1-24
+ switchport mode access
+ switchport port-security
+switchport port-security maximum 1
+ switchport port-security mac-address sticky 
+ switchport port-security violation shutdown
+
