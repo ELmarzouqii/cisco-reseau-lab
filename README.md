@@ -1,6 +1,6 @@
 # 🌐 Enterprise Network Topology & Architecture (Cisco Packet Tracer)
 
-Un projet complet d'architecture réseau d'entreprise simulant un environnement hautement disponible, sécurisé et segmenté. Réalisé avec **Cisco Packet Tracer**, ce projet intègre le routage dynamique, la redondance au niveau du passerelle (FHRP), la segmentation VLAN, l'agrégation de liens ainsi que les meilleures pratiques de sécurité et de gestion.
+Un projet complet d'architecture réseau d'entreprise simulant un environnement hautement disponible, sécurisé et segmenté. Réalisé avec **Cisco Packet Tracer**, ce projet intègre le routage dynamique, la redondance au niveau de la passerelle (FHRP), la segmentation VLAN, l'agrégation de liens ainsi que les meilleures pratiques de sécurité et de gestion.
 
 ---
 
@@ -14,7 +14,7 @@ L'infrastructure est conçue pour garantir la tolérance aux pannes, l'évolutiv
 - **Agrégation de liens (EtherChannel - PAgP/LACP)** entre commutateurs.
 - **Spanning Tree Protocol (STP / PVST+)** optimisé pour éviter les boucles L2.
 - **Sécurité des accès (Port-Security)** sur les ports utilisateurs.
-- **Services réseau centralisés :** Server DHCP, NTP et Syslog Logging.
+- **Services réseau centralisés :** Serveur DHCP, NTP et Syslog Logging.
 
 ---
 
@@ -81,4 +81,4 @@ L'infrastructure est conçue pour garantir la tolérance aux pannes, l'évolutiv
 ---
 
 ## 📝 Auteur
-Réalisé par **votre nom / pseudo GitHub** dans le cadre de travaux pratiques en Systèmes et Réseaux.
+Réalisé par **Amine El-Marzouqi** dans le cadre de travaux pratiques en Systèmes et Réseaux.
